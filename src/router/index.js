@@ -5,20 +5,20 @@ import Router from 'vue-router'
 // import Whatever from '@/components/Whatever' //switched to lazy load
 
 const Home = resolve => {
-    require.ensure(['@/components/Home.vue'], () => {
-        resolve(require('@/components/Home.vue'));
+    require.ensure(['@/components/Pages/Home.vue'], () => {
+        resolve(require('@/components/Pages/Home.vue'));
 }, 'home');
 }
 
 const About = resolve => {
-    require.ensure(['@/components/About.vue'], () => {
-        resolve(require('@/components/About.vue'));
+    require.ensure(['@/components/Pages/About.vue'], () => {
+        resolve(require('@/components/Pages/About.vue'));
 }, 'about');
 }
 
 const Whatever = resolve => {
-    require.ensure(['@/components/Whatever.vue'], () => {
-        resolve(require('@/components/Whatever.vue'));
+    require.ensure(['@/components/Pages/Whatever.vue'], () => {
+        resolve(require('@/components/Pages/Whatever.vue'));
 }, 'whatever');
 }
 

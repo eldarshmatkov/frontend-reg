@@ -17,23 +17,21 @@ body {
 	flex-direction: column;
 	align-items: center;
 	margin: 0;
+  background-image: url('~assets/images/main-bg.png');
+  background-repeat: repeat;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  width: 980px;
-  border: 2px solid #000;
-  padding: 3px;
+  width: 650px;
   box-sizing: border-box;
-  height: 98vh;
-  margin-top: 1vh;
-  margin-bottom: 1vh;
+  height: 100%;
   min-height: 334px;
   overflow: hidden;
 }
-@media screen and (max-width: 1024px) {
+/* @media screen and (max-width: 1024px) {
   #app {
     width: 652px;
   }
@@ -42,5 +40,5 @@ body {
   #app {
     width: 324px;
   } 
-}
+} */
 </style>
