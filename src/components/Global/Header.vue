@@ -26,6 +26,7 @@ export default {
 <style lang="scss" scoped>
 header {
 	height: 10vh;
+	background-color: #fff;
 	border: 1px solid #000;
 	margin-top: 50px;
 	margin-bottom: 50px;

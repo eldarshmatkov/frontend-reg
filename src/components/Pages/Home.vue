@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <headerComp></headerComp>
+    <!-- head start -->
     <div class="head row between">
       <div class="col left">
         <div class="row title">Сортировка</div>
@@ -17,12 +18,77 @@
       <div class="col right">
         <div class="row title">Вид</div>
         <div class="row switch">
-          <div class="item v-center h-center active">Таблица</div>
-          <div class="item v-center h-center">Превью</div>
+          <div
+          @click="listView.table = !listView.table;listView.preview = !listView.preview"
+          class="item v-center h-center" 
+          :class="{'active':listView.table}"
+          >Таблица</div>
+          <div 
+          @click="listView.preview = !listView.preview;listView.table = !listView.table"
+          :class="{'active':listView.preview}"
+          class="item v-center h-center">Превью</div>
         </div>
       </div>
     </div>
+    <!-- head end -->
+
+    <!-- list start -->
+    <div class="list"
+    :class="{'table':listView.table, 'preview':listView.preview}">
+    <div class="item row between double">
+      <div class="left-col">
+        <div class="picture"><div class="bg"></div></div>
+        <div class="name">Gilbert Morton</div>
+        <div class="age">30 лет</div>
+        <div class="tel">(415) 670-6901</div>
+        <div class="fav"></div>
+        <div v-if="listView.preview" class="txt">
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+        </div>
+      </div>
+      <div v-if="listView.preview" class="right-col">ssssssss</div>
+    </div>
+    <div class="item row between">
+      <div class="left-col">
+        <div class="picture"><div class="bg"></div></div>
+        <div class="name">Gilbert Morton</div>
+        <div class="age">30 лет</div>
+        <div class="tel">(415) 670-6901</div>
+        <div class="fav"></div>
+        <div v-if="listView.preview" class="txt">
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+        </div>
+      </div>
+      <div v-if="listView.preview" class="right-col">ssssssss</div>
+    </div>
+    <div class="item row between">
+      <div class="left-col">
+        <div class="picture"><div class="bg"></div></div>
+        <div class="name">Gilbert Morton</div>
+        <div class="age">30 лет</div>
+        <div class="tel">(415) 670-6901</div>
+        <div class="fav"></div>
+        <div v-if="listView.preview" class="txt">
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+          Some Lorem ipsum text here...
+        </div>
+      </div>
+      <div v-if="listView.preview" class="right-col">ssssssss</div>
+    </div>
   </div>
+  <!-- list end -->
+</div>
 </template>
 
 <script>
@@ -36,24 +102,42 @@ export default {
   data () {
     return {
       postData,
+      listView: {
+        table: true,
+        preview: false
+      }
     }
+  },
+  watch: {
   },
   components: {
     headerComp: Header,
     VueScrollbar
   },
   methods: {
+    somethingElse: function() {
 
+    }
   },
   mounted() {
     console.log(this.postData);
     require("vue2-scrollbar/dist/style/vue2-scrollbar.css");
-    // init masonry with selector 
-/*    var msnry = new Masonry( '.home__wrapper', {
-      itemSelector: '.home__wrapper .item',
-      columnWidth: 309,
-      gutter:19
-    });*/
+  },
+  updated() {
+    if (this.listView.preview) {
+      var msnry = new Masonry( '.list.preview', {
+        itemSelector: '.item',
+        columnWidth: 320,
+        gutter:10
+      });
+    }
+    else {
+      var msnry = new Masonry( '.list.table', {
+        itemSelector: '.item',
+        columnWidth: 650,
+      });
+      msnry.destroy();
+    }
   }
 }
 </script>
@@ -61,6 +145,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~assets/css/global.css';
+// <!-- head start -->
 .home {
   .head {
     margin-bottom: 37px;
@@ -69,6 +154,7 @@ export default {
         &.active {
           background-color: #e6e6e6 !important;
           cursor: default;
+          pointer-events:none;
         }
         &:not(:last-child) {
           border-right: 1px solid #000;
@@ -100,20 +186,124 @@ export default {
       &.right {
         width: 250px;
         .switch {
-           border:1px solid #000;
-           .item {
-            height: 74px;
-            flex:1;
-            background-color: #FFF;
-           }
+         border:1px solid #000;
+         .item {
+          height: 74px;
+          flex:1;
+          background-color: #FFF;
         }
-      } 
+      }
+    } 
+  }
+  .title {
+    margin-bottom: 23px;
+  }
+}
+}
+// <!-- head end -->
+
+// <!-- list start -->
+.list {
+  .item {
+    .left-col {
+      .picture {
+        width: 42px;
+        height: 40px;
+        border-radius: 150px;
+        overflow: hidden;
+        background-color: grey;
+        .bg {
+          height: 100%;
+          width: 100%;
+          background-size:cover;
+          background-repeat: no-repeat;
+          background: #fff url("~assets/images/owl.svg");
+        }
+      }
+      .fav {
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+        background-repeat:no-repeat;
+        background: url("~assets/images/star-sprite.png");
+        background-position: 16px 0;
+      }
     }
-    .title {
-      margin-bottom: 23px;
+    .right-col {
+
     }
   }
 }
+.list.table {
+  .item {
+    width: 100%;
+    height: 72px;
+    margin-bottom: 0;
+    background-color: #fafafa;
+    padding-left: 10px;
+    padding-right: 15px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #cecece;
+    -webkit-box-shadow: 0px 5px 5px 0px rgba(206,206,206,1);
+    -moz-box-shadow: 0px 5px 5px 0px rgba(206,206,206,1);
+    box-shadow: 0px 5px 5px 0px rgba(206,206,206,1);
+    .left-col {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+.list.preview {
+  .item {
+    margin-bottom: 16px;
+    width: 320px;
+    height: 246px;
+    display: flex;
+    flex-direction: row;
+    -webkit-box-shadow: 0px 10px 13px 0px rgba(117,117,117,1);
+    -moz-box-shadow: 0px 10px 13px 0px rgba(117,117,117,1);
+    box-shadow: 0px 10px 13px 0px rgba(117,117,117,1);
+    .left-col {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      padding: 16px;
+      background-color: #fff;
+      flex:1;
+      position: relative;
+      .name {
+        position: absolute;
+        top: 30px;
+        left: 70px;
+      }
+      .fav {
+        position: absolute;
+        top: 30px;
+        right: 25px;
+      }
+    }
+    .right-col {
+      display: none;
+    }
+    &.double {
+      width: 650px;
+      .right-col {
+        display: block;
+        flex:1;
+        background-color: #FFF;
+        -webkit-box-shadow: -4px 0px 5px -1px rgba(219,219,219,1);
+        -moz-box-shadow: -4px 0px 5px -1px rgba(219,219,219,1);
+        box-shadow: -4px 0px 5px -1px rgba(219,219,219,1);
+        position: relative;
+        z-index: 2;
+      }
+    }
+  }
+}
+// <!-- list end -->
 @media screen and (max-width: 1024px) {
   .home {
 
