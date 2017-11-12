@@ -26,7 +26,7 @@ module.exports = {
       '@': resolve('src'),
       'api': resolve('api'),
       'assets': path.resolve(__dirname, '../src/assets'),
-      'masonry$': resolve('node_modules/masonry-layout/dist/masonry.pkgd.min.js')
+      
     }
   },
   module: {

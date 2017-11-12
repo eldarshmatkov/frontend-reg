@@ -35,57 +35,19 @@
     <!-- list start -->
     <div class="list"
     :class="{'table':listView.table, 'preview':listView.preview}">
-    <div class="item row between double">
-      <div class="left-col">
-        <div class="picture"><div class="bg"></div></div>
-        <div class="name">Gilbert Morton</div>
-        <div class="age">30 лет</div>
-        <div class="tel">(415) 670-6901</div>
-        <div class="fav"></div>
-        <div v-if="listView.preview" class="txt">
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
+      <div class="item isotope-item row between" :class="{'double':item.video}" v-for="(item, key) in postData" :key="item.id">
+        <div class="left-col">
+          <div class="picture"><div class="bg"></div></div>
+          <div class="name">{{item.name}}</div>
+          <div class="age">{{item.age}}</div>
+          <div class="tel">{{item.phone}}</div>
+          <div class="fav"></div>
+          <div v-if="listView.preview" class="txt">
+            {{item.phrase}}
+          </div>
         </div>
+        <div v-if="listView.preview&&item.video" class="right-col">ssssssss</div>
       </div>
-      <div v-if="listView.preview" class="right-col">ssssssss</div>
-    </div>
-    <div class="item row between">
-      <div class="left-col">
-        <div class="picture"><div class="bg"></div></div>
-        <div class="name">Gilbert Morton</div>
-        <div class="age">30 лет</div>
-        <div class="tel">(415) 670-6901</div>
-        <div class="fav"></div>
-        <div v-if="listView.preview" class="txt">
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-        </div>
-      </div>
-      <div v-if="listView.preview" class="right-col">ssssssss</div>
-    </div>
-    <div class="item row between">
-      <div class="left-col">
-        <div class="picture"><div class="bg"></div></div>
-        <div class="name">Gilbert Morton</div>
-        <div class="age">30 лет</div>
-        <div class="tel">(415) 670-6901</div>
-        <div class="fav"></div>
-        <div v-if="listView.preview" class="txt">
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-          Some Lorem ipsum text here...
-        </div>
-      </div>
-      <div v-if="listView.preview" class="right-col">ssssssss</div>
-    </div>
   </div>
   <!-- list end -->
 </div>
@@ -93,7 +55,7 @@
 
 <script>
 import Header from '@/components/Global/Header';
-import Masonry from 'masonry-layout/masonry.js';
+// import Masonry from 'masonry-layout/masonry.js';
 import VueScrollbar from 'vue2-scrollbar';
 import postData from 'api/data.json';
 
@@ -106,8 +68,8 @@ export default {
         table: true,
         preview: false
       }
-    }
-  },
+}
+},
   watch: {
   },
   components: {
@@ -124,19 +86,12 @@ export default {
     require("vue2-scrollbar/dist/style/vue2-scrollbar.css");
   },
   updated() {
-    if (this.listView.preview) {
-      var msnry = new Masonry( '.list.preview', {
-        itemSelector: '.item',
-        columnWidth: 320,
-        gutter:10
-      });
+   if (this.listView.preview) {
+    // console.log(this.$refs.cpt.layout("fit-rows"));
+    // this.$refs.cpt.layout("fit-rows");
     }
     else {
-      var msnry = new Masonry( '.list.table', {
-        itemSelector: '.item',
-        columnWidth: 650,
-      });
-      msnry.destroy();
+      // this.$refs.cpt.layout('masonry');
     }
   }
 }
@@ -258,8 +213,9 @@ export default {
 }
 .list.preview {
   .item {
+    float: left;
     margin-bottom: 16px;
-    width: 320px;
+    width: 300px;
     height: 246px;
     display: flex;
     flex-direction: row;
@@ -289,7 +245,7 @@ export default {
       display: none;
     }
     &.double {
-      width: 650px;
+      width: 600px;
       .right-col {
         display: block;
         flex:1;

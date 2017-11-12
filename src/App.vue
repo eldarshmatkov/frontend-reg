@@ -27,7 +27,7 @@ body {
   color: #2c3e50;
   width: 650px;
   box-sizing: border-box;
-  /* height: 100%; */    height: 100vh;
+  /* height: 100%;    height: 100vh; */
   min-height: 334px;
   overflow: hidden;
 }
