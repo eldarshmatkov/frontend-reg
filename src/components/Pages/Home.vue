@@ -5,10 +5,10 @@
     <div class="head row between">
       <div class="col left">
         <div class="row title">Сортировка</div>
-        <div class="row second">
-          <div class="item v-center h-center active">ID</div>
-          <div class="item v-center h-center">Имя</div>         
-          <div class="item v-center h-center">Возраст</div>
+        <div class="row second button-group sort-by-button-group">
+          <div class="item v-center h-center active" data-sort-value="id">ID</div>
+          <div class="item v-center h-center" data-sort-value="name">Имя</div>         
+          <div class="item v-center h-center" data-sort-value="age">Возраст</div>
         </div>
         <div class="row third">
           <div class="item v-center h-center active">По возрастанию</div>
@@ -35,27 +35,33 @@
     <!-- list start -->
     <div class="list"
     :class="{'table':listView.table, 'preview':listView.preview}">
-      <div class="item isotope-item row between" :class="{'double':item.video}" v-for="(item, key) in postData" :key="item.id">
-        <div class="left-col">
-          <div class="picture"><div class="bg"></div></div>
-          <div class="name">{{item.name}}</div>
-          <div class="age">{{item.age}}</div>
-          <div class="tel">{{item.phone}}</div>
-          <div class="fav"></div>
-          <div v-if="listView.preview" class="txt">
-            {{item.phrase}}
-          </div>
-        </div>
-        <div v-if="listView.preview&&item.video" class="right-col">ssssssss</div>
+    <div 
+    class="item isotope-item row between" 
+    :class="{'double':item.video}" 
+    v-for="(item, key) in postData" 
+    :data-id="item.id"
+    :key="item.id">
+    <div class="left-col">
+      <div class="picture"><div class="bg"></div></div>
+      <div class="name">{{item.name}}</div>
+      <div class="age">{{item.age}}</div>
+      <div class="tel">{{item.phone}}</div>
+      <div class="fav"></div>
+      <div v-if="listView.preview" class="txt">
+        {{item.phrase}}
       </div>
+    </div>
+    <div v-if="listView.preview&&item.video" class="right-col">ssssssss</div>
   </div>
-  <!-- list end -->
+</div>
+<!-- list end -->
 </div>
 </template>
 
 <script>
 import Header from '@/components/Global/Header';
-// import Masonry from 'masonry-layout/masonry.js';
+import Isotope from 'isotope-layout/js/isotope.js';
+import packery from 'isotope-packery/packery-mode.js';
 import VueScrollbar from 'vue2-scrollbar';
 import postData from 'api/data.json';
 
@@ -68,8 +74,8 @@ export default {
         table: true,
         preview: false
       }
-}
-},
+    }
+  },
   watch: {
   },
   components: {
@@ -77,7 +83,7 @@ export default {
     VueScrollbar
   },
   methods: {
-    somethingElse: function() {
+    infiniteHandler: function() {
 
     }
   },
@@ -87,13 +93,30 @@ export default {
   },
   updated() {
    if (this.listView.preview) {
-    // console.log(this.$refs.cpt.layout("fit-rows"));
-    // this.$refs.cpt.layout("fit-rows");
-    }
-    else {
-      // this.$refs.cpt.layout('masonry');
-    }
+    var grid = document.querySelector('.home .list');
+    var iso = new Isotope( grid, {
+  // options...
+  itemSelector: '.isotope-item',
+  layoutMode: 'packery',
+  packery: {
+    gutter: 10
   }
+});
+  }
+  else {
+    var grid = document.querySelector('.home .list');
+    var iso = new Isotope( grid, {
+  // options...
+  itemSelector: '.isotope-item',
+  layoutMode: 'masonry',
+  getSortData: {
+    id: '[data-id]',
+    name: '.name',
+    age: '.age',
+  }
+});
+  }
+}
 }
 </script>
 
@@ -215,7 +238,7 @@ export default {
   .item {
     float: left;
     margin-bottom: 16px;
-    width: 300px;
+    width: 320px;
     height: 246px;
     display: flex;
     flex-direction: row;
@@ -245,7 +268,7 @@ export default {
       display: none;
     }
     &.double {
-      width: 600px;
+      width: 650px;
       .right-col {
         display: block;
         flex:1;
