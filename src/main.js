@@ -3,7 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import lodash from 'lodash'
+import VueLodash from 'vue-lodash'
 
+Vue.use(VueLodash, lodash)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

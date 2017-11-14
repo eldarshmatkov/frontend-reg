@@ -6,13 +6,13 @@
       <div class="col left">
         <div class="row title">Сортировка</div>
         <div class="row second button-group sort-by-button-group">
-          <div class="item v-center h-center active" data-sort-value="id">ID</div>
-          <div class="item v-center h-center" data-sort-value="name">Имя</div>         
-          <div class="item v-center h-center" data-sort-value="age">Возраст</div>
+          <div class="item v-center h-center" data-sort-value="id" @click="orderOptions.orderMethod = 'id'" :class="{'active':orderOptions.orderMethod == 'id'}">ID</div>
+          <div class="item v-center h-center" data-sort-value="name" @click="orderOptions.orderMethod = 'name'" :class="{'active':orderOptions.orderMethod == 'name'}">Имя</div>         
+          <div class="item v-center h-center" data-sort-value="age" @click="orderOptions.orderMethod = 'age'" :class="{'active':orderOptions.orderMethod == 'age'}">Возраст</div>
         </div>
         <div class="row third">
-          <div class="item v-center h-center active">По возрастанию</div>
-          <div class="item v-center h-center">По убыванию</div>
+          <div class="item v-center h-center" @click="orderOptions.ascending = true" :class="{'active':orderOptions.ascending}">По возрастанию</div>
+          <div class="item v-center h-center" @click="orderOptions.ascending = false" :class="{'active':!orderOptions.ascending}">По убыванию</div>
         </div>
       </div>
       <div class="col right">
@@ -38,7 +38,7 @@
     <div 
     class="item isotope-item row between" 
     :class="{'double':item.video}" 
-    v-for="(item, key) in postData" 
+    v-for="(item, key) in orderBy" 
     :data-id="item.id"
     :key="item.id">
     <div class="left-col">
@@ -69,6 +69,10 @@ import postData from 'api/data.json';
 export default {
   data () {
     return {
+      orderOptions: {
+        orderMethod: 'id',
+        ascending: true
+      },
       postData,
       listView: {
         table: true,
@@ -83,10 +87,17 @@ export default {
     VueScrollbar
   },
   methods: {
-    infiniteHandler: function() {
-
-    }
   },
+  computed: {
+    orderBy: function() {
+      var that = this;
+      if (this.orderOptions.ascending) {
+        return _.orderBy(this.postData, that.orderOptions.orderMethod);
+      } else {
+        return _.orderBy(this.postData, that.orderOptions.orderMethod).reverse();
+      }
+    }
+},
   mounted() {
     console.log(this.postData);
     require("vue2-scrollbar/dist/style/vue2-scrollbar.css");
@@ -132,7 +143,7 @@ export default {
         &.active {
           background-color: #e6e6e6 !important;
           cursor: default;
-          pointer-events:none;
+          // pointer-events:none; uncomment later
         }
         &:not(:last-child) {
           border-right: 1px solid #000;
