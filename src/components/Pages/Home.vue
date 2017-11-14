@@ -6,9 +6,9 @@
       <div class="col left">
         <div class="row title">Сортировка</div>
         <div class="row second button-group sort-by-button-group">
-          <div class="item v-center h-center" data-sort-value="id" @click="orderOptions.orderMethod = 'id'" :class="{'active':orderOptions.orderMethod == 'id'}">ID</div>
-          <div class="item v-center h-center" data-sort-value="name" @click="orderOptions.orderMethod = 'name'" :class="{'active':orderOptions.orderMethod == 'name'}">Имя</div>         
-          <div class="item v-center h-center" data-sort-value="age" @click="orderOptions.orderMethod = 'age'" :class="{'active':orderOptions.orderMethod == 'age'}">Возраст</div>
+          <div class="item v-center h-center" @click="orderOptions.orderMethod = 'id'" :class="{'active':orderOptions.orderMethod == 'id'}">ID</div>
+          <div class="item v-center h-center" @click="orderOptions.orderMethod = 'name'" :class="{'active':orderOptions.orderMethod == 'name'}">Имя</div>         
+          <div class="item v-center h-center" @click="orderOptions.orderMethod = 'age'" :class="{'active':orderOptions.orderMethod == 'age'}">Возраст</div>
         </div>
         <div class="row third">
           <div class="item v-center h-center" @click="orderOptions.ascending = true" :class="{'active':orderOptions.ascending}">По возрастанию</div>
@@ -120,11 +120,6 @@ export default {
   // options...
   itemSelector: '.isotope-item',
   layoutMode: 'masonry',
-  getSortData: {
-    id: '[data-id]',
-    name: '.name',
-    age: '.age',
-  }
 });
   }
 }
