@@ -45,11 +45,11 @@
     :data-id="item.id"
     :key="item.id">
     <div class="left-col">
-      <div class="picture"><div class="bg"></div></div>
+      <div class="picture"><div class="bg" :class="item.image" :style="item.image"></div></div>
       <div class="name">{{item.name}}  {{item.surname}}</div>
       <div class="age">{{item.age}}</div>
       <div class="tel">{{item.phone}}</div>
-      <div class="fav"></div>
+      <div class="fav" :class="{'active': item.favourite}"></div>
       <div v-if="listView.preview" class="txt">
         {{item.phrase}}
       </div>
@@ -73,6 +73,7 @@ import Fuse from 'fuse-js-latest/dist/fuse.min.js';
 export default {
   data () {
     return {
+      imgSrc: 'src/assets/images/',
       orderOptions: {
         orderMethod: 'id',
         ascending: true,
@@ -97,8 +98,8 @@ export default {
     orderBy: function(prop) {
       var that = this;
       var filteredData = this.postData;
-      // console.log(filteredData);
-            if (this.orderOptions.searchName) {
+      console.log(filteredData);
+      if (this.orderOptions.searchName) {
         var that = this;
        // filteredData = filteredData.filter(function(cust){return cust.surname.toLowerCase().indexOf(that.orderOptions.searchName.toLowerCase())>=0});
        var options = {
@@ -108,7 +109,7 @@ export default {
         location: 0,
         distance: 500,
         maxPatternLength: 32,
-        minMatchCharLength: 1,
+        minMatchCharLength: 3,
         keys: [
         "name",
         "surname"
@@ -118,16 +119,16 @@ var fuse = new Fuse(filteredData, options); // "list" is the item array
 var result = fuse.search(that.orderOptions.searchName);
 filteredData = result;
 }
-      if (this.orderOptions.ascending) {
-        filteredData = _.orderBy(filteredData, that.orderOptions.orderMethod);
+if (this.orderOptions.ascending) {
+  filteredData = _.orderBy(filteredData, that.orderOptions.orderMethod);
         // console.log(filteredData);
       } else {
         filteredData = _.orderBy(filteredData, that.orderOptions.orderMethod).reverse();
       }
-return filteredData;
-}
-},
-mounted() {
+      return filteredData;
+    }
+  },
+  mounted() {
     // console.log(this.postData);
     require("vue2-scrollbar/dist/style/vue2-scrollbar.css");
   },
@@ -232,9 +233,16 @@ mounted() {
 .list {
   .item {
     .left-col {
+      .name {
+        flex:2;
+      }
+      .age, .tel,  {
+        flex:1;
+      }
       .picture {
         width: 42px;
         height: 40px;
+        margin-right: 20px;
         border-radius: 150px;
         overflow: hidden;
         background-color: grey;
@@ -243,16 +251,49 @@ mounted() {
           width: 100%;
           background-size:cover;
           background-repeat: no-repeat;
-          background: #fff url("~assets/images/owl.svg");
+          &.sheep {
+            background: #fff url("~assets/images/sheep.svg");
+          }
+          &.pig {
+            background: #fff url("~assets/images/pig.svg");
+          }
+          &.cat {
+            background: #fff url("~assets/images/cat.svg");
+          }
+          &.owl {
+            background: #fff url("~assets/images/owl.svg");
+          }
+          &.lion {
+            background: #fff url("~assets/images/lion.svg");
+          }
+          &.koala {
+            background: #fff url("~assets/images/koala.svg");
+          }
+          &.penguin {
+            background: #fff url("~assets/images/penguin.svg");
+          }
+          &.raccoon {
+            background: #fff url("~assets/images/raccoon.svg");
+          }
+          &.dog {
+            background: #fff url("~assets/images/dog.svg");
+          }
+          &.fox {
+            background: #fff url("~assets/images/fox.svg");
+          }
         }
       }
       .fav {
         cursor: pointer;
         width: 16px;
         height: 16px;
+        margin-left: 50px;
         background-repeat:no-repeat;
         background: url("~assets/images/star-sprite.png");
         background-position: 16px 0;
+        &.active {
+          background-position:0;
+        }
       }
     }
     .right-col {
@@ -301,6 +342,9 @@ mounted() {
       background-color: #fff;
       flex:1;
       position: relative;
+      .picture {
+        margin-bottom: 30px;
+      }
       .name {
         position: absolute;
         top: 30px;

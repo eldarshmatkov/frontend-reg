@@ -1,24 +1,24 @@
 <template>
-  <header>
-  	<nav>
-  		<router-link to="/">Home</router-link>
-  		<router-link to="/about">About</router-link>
-  		<router-link to="/whatever">Whatever</router-link>
-  	</nav>
-  	<div class="lang_switch">
-  		<div class="ru active">русский</div>
-  		<div class="eng">english</div>
-  	</div>
-  </header>
+	<header>
+		<nav>
+			<router-link to="/">Home</router-link>
+			<router-link to="/about">About</router-link>
+			<router-link to="/whatever">Whatever</router-link>
+		</nav>
+		<div class="lang_switch">
+			<div class="ru active">русский</div>
+			<div class="eng">english</div>
+		</div>
+	</header>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
+	data () {
+		return {
 
-    }
-  }
+		}
+	}
 }
 </script>
 
@@ -50,6 +50,8 @@ header {
 				text-decoration: none;
 				cursor: default;
 				font-weight: 900;
+				position: relative;
+				top: -3px;
 			}
 		}
 	}
@@ -71,10 +73,10 @@ header {
 	}
 }
 @media screen and (max-width: 1024px) {
-  header {
-    a {
-    	width: 80px;
-    }
-  }
+	header {
+		a {
+			width: 80px;
+		}
+	}
 }
 </style>
