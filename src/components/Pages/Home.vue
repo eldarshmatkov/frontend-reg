@@ -5,7 +5,10 @@
     <div class="head row between">
       <div class="col left">
         <div class="row title">Сортировка</div>
-        <div class="row second button-group sort-by-button-group">
+        <div class="row first">
+          <input type="text" placeholder="Введите Имя/Фамилию" v-model="orderOptions.searchName">
+        </div>
+        <div class="row second">
           <div class="item v-center h-center" @click="orderOptions.orderMethod = 'id'" :class="{'active':orderOptions.orderMethod == 'id'}">ID</div>
           <div class="item v-center h-center" @click="orderOptions.orderMethod = 'name'" :class="{'active':orderOptions.orderMethod == 'name'}">Имя</div>         
           <div class="item v-center h-center" @click="orderOptions.orderMethod = 'age'" :class="{'active':orderOptions.orderMethod == 'age'}">Возраст</div>
@@ -43,7 +46,7 @@
     :key="item.id">
     <div class="left-col">
       <div class="picture"><div class="bg"></div></div>
-      <div class="name">{{item.name}}</div>
+      <div class="name">{{item.name}}  {{item.surname}}</div>
       <div class="age">{{item.age}}</div>
       <div class="tel">{{item.phone}}</div>
       <div class="fav"></div>
@@ -64,6 +67,7 @@ import Isotope from 'isotope-layout/js/isotope.js';
 import packery from 'isotope-packery/packery-mode.js';
 import VueScrollbar from 'vue2-scrollbar';
 import postData from 'api/data.json';
+import Fuse from 'fuse-js-latest/dist/fuse.min.js';
 
 
 export default {
@@ -71,7 +75,8 @@ export default {
     return {
       orderOptions: {
         orderMethod: 'id',
-        ascending: true
+        ascending: true,
+        searchName:''
       },
       postData,
       listView: {
@@ -89,17 +94,41 @@ export default {
   methods: {
   },
   computed: {
-    orderBy: function() {
+    orderBy: function(prop) {
       var that = this;
+      var filteredData = this.postData;
+      // console.log(filteredData);
+            if (this.orderOptions.searchName) {
+        var that = this;
+       // filteredData = filteredData.filter(function(cust){return cust.surname.toLowerCase().indexOf(that.orderOptions.searchName.toLowerCase())>=0});
+       var options = {
+        shouldSort: true,
+        matchAllTokens: true,
+        threshold: 0.5,
+        location: 0,
+        distance: 500,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+        "name",
+        "surname"
+        ]
+      };
+var fuse = new Fuse(filteredData, options); // "list" is the item array
+var result = fuse.search(that.orderOptions.searchName);
+filteredData = result;
+}
       if (this.orderOptions.ascending) {
-        return _.orderBy(this.postData, that.orderOptions.orderMethod);
+        filteredData = _.orderBy(filteredData, that.orderOptions.orderMethod);
+        // console.log(filteredData);
       } else {
-        return _.orderBy(this.postData, that.orderOptions.orderMethod).reverse();
+        filteredData = _.orderBy(filteredData, that.orderOptions.orderMethod).reverse();
       }
-    }
+return filteredData;
+}
 },
-  mounted() {
-    console.log(this.postData);
+mounted() {
+    // console.log(this.postData);
     require("vue2-scrollbar/dist/style/vue2-scrollbar.css");
   },
   updated() {
@@ -138,7 +167,7 @@ export default {
         &.active {
           background-color: #e6e6e6 !important;
           cursor: default;
-          // pointer-events:none; uncomment later
+          pointer-events:none;
         }
         &:not(:last-child) {
           border-right: 1px solid #000;
@@ -149,6 +178,19 @@ export default {
       }
       &.left {
         width: 351px;
+        .first {
+          margin-bottom: 10px;
+          input {
+            height: 31px;
+            padding-left:10px;
+            padding-right: 10px;
+            box-sizing:border-box;
+            border: 1px solid #000;
+            &:focus {
+              outline:none;
+            }
+          }
+        }
         .second {
           border:1px solid #000;
           margin-bottom: 10px;
@@ -172,7 +214,7 @@ export default {
         .switch {
          border:1px solid #000;
          .item {
-          height: 74px;
+          height: 115px;
           flex:1;
           background-color: #FFF;
         }

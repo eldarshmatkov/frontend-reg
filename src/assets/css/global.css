@@ -1,3 +1,6 @@
+html {
+	overflow-y: scroll;
+}
 .col {
 	display: -webkit-flex;
 	display: -moz-flex;
