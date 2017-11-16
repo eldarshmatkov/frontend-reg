@@ -154,7 +154,9 @@ if (this.orderOptions.ascending) {
     require("vue2-scrollbar/dist/style/vue2-scrollbar.css");
   },
   updated() {
+    var that = this;
    if (this.listView.preview) {
+    console.log(that.$refs.videoPlayer);
     var grid = document.querySelector('.home .list');
     var iso = new Isotope( grid, {
   // options...
