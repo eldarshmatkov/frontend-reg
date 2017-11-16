@@ -25,6 +25,7 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       'api': resolve('api'),
+      'nodeModules': resolve('node_modules'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'masonry': 'masonry-layout',
       'isotope': 'isotope-layout',

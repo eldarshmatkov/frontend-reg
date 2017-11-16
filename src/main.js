@@ -5,7 +5,10 @@ import App from './App'
 import router from './router'
 import lodash from 'lodash'
 import VueLodash from 'vue-lodash'
+import VueVideoPlayer from 'vue-video-player'
 
+
+Vue.use(VueVideoPlayer)
 Vue.use(VueLodash, lodash)
 Vue.config.productionTip = false
 

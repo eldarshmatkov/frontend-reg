@@ -54,7 +54,14 @@
         {{item.phrase}}
       </div>
     </div>
-    <div v-if="listView.preview&&item.video" class="right-col">ssssssss</div>
+    <div v-if="listView.preview&&item.video" class="right-col">
+      <video-player  
+      class="video-player-box"
+      ref="videoPlayer"
+      :playsinline="true"
+      :options="playerOptions">
+    </video-player>
+    </div>
   </div>
 </div>
 <!-- list end -->
@@ -63,17 +70,30 @@
 
 <script>
 import Header from '@/components/Global/Header';
+import postData from 'api/data.json';
 import Isotope from 'isotope-layout/js/isotope.js';
 import packery from 'isotope-packery/packery-mode.js';
 import VueScrollbar from 'vue2-scrollbar';
-import postData from 'api/data.json';
 import Fuse from 'fuse-js-latest/dist/fuse.min.js';
+import { videoPlayer } from 'vue-video-player';
 
 
 export default {
   data () {
     return {
-      imgSrc: 'src/assets/images/',
+      playerOptions: {
+          // videojs options
+          muted: true,
+          width: 320,
+          height: 246,
+          language: 'en',
+          playbackRates: [0.7, 1.0, 1.5, 2.0],
+          sources: [{
+            type: "video/mp4",
+            src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
+          }],
+          // poster: "/static/images/author.jpg",
+        },
       orderOptions: {
         orderMethod: 'id',
         ascending: true,
@@ -90,7 +110,8 @@ export default {
   },
   components: {
     headerComp: Header,
-    VueScrollbar
+    VueScrollbar,
+    videoPlayer
   },
   methods: {
   },
@@ -98,7 +119,7 @@ export default {
     orderBy: function(prop) {
       var that = this;
       var filteredData = this.postData;
-      console.log(filteredData);
+      // console.log(filteredData);
       if (this.orderOptions.searchName) {
         var that = this;
        // filteredData = filteredData.filter(function(cust){return cust.surname.toLowerCase().indexOf(that.orderOptions.searchName.toLowerCase())>=0});
@@ -159,6 +180,8 @@ if (this.orderOptions.ascending) {
 
 <style lang="scss" scoped>
 @import '~assets/css/global.css';
+@import '~nodeModules/video.js/dist/video-js.css';
+@import '~nodeModules/vue-video-player/src/custom-theme.css';
 // <!-- head start -->
 .home {
   .head {
