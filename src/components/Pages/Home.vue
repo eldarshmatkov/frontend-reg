@@ -55,12 +55,9 @@
       </div>
     </div>
     <div v-if="listView.preview&&item.video" class="right-col">
-      <video-player  
-      class="video-player-box"
-      ref="videoPlayer"
-      :playsinline="true"
-      :options="playerOptions">
-    </video-player>
+      <video width="320" height="246" controls>
+        <source :src="'static/video/' + item.video + '.mp4'" type="video/mp4">
+        </video>
     </div>
   </div>
 </div>
@@ -75,25 +72,11 @@ import Isotope from 'isotope-layout/js/isotope.js';
 import packery from 'isotope-packery/packery-mode.js';
 import VueScrollbar from 'vue2-scrollbar';
 import Fuse from 'fuse-js-latest/dist/fuse.min.js';
-import { videoPlayer } from 'vue-video-player';
 
 
 export default {
   data () {
     return {
-      playerOptions: {
-          // videojs options
-          muted: true,
-          width: 320,
-          height: 246,
-          language: 'en',
-          playbackRates: [0.7, 1.0, 1.5, 2.0],
-          sources: [{
-            type: "video/mp4",
-            src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-          }],
-          // poster: "/static/images/author.jpg",
-        },
       orderOptions: {
         orderMethod: 'id',
         ascending: true,
@@ -111,7 +94,6 @@ export default {
   components: {
     headerComp: Header,
     VueScrollbar,
-    videoPlayer
   },
   methods: {
   },
@@ -150,13 +132,12 @@ if (this.orderOptions.ascending) {
     }
   },
   mounted() {
-    // console.log(this.postData);
+    console.log(this.postData);
     require("vue2-scrollbar/dist/style/vue2-scrollbar.css");
   },
   updated() {
     var that = this;
    if (this.listView.preview) {
-    console.log(that.$refs.videoPlayer);
     var grid = document.querySelector('.home .list');
     var iso = new Isotope( grid, {
   // options...
@@ -182,8 +163,6 @@ if (this.orderOptions.ascending) {
 
 <style lang="scss" scoped>
 @import '~assets/css/global.css';
-@import '~nodeModules/video.js/dist/video-js.css';
-@import '~nodeModules/vue-video-player/src/custom-theme.css';
 // <!-- head start -->
 .home {
   .head {
