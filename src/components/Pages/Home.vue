@@ -4,32 +4,32 @@
     <!-- head start -->
     <div class="head row between">
       <div class="col left">
-        <div class="row title">Сортировка</div>
+        <div class="row title">{{ $t("filter.sort") }}</div>
         <div class="row first">
-          <input type="text" placeholder="Введите Имя/Фамилию" v-model="orderOptions.searchName">
+          <input type="text" :placeholder="$t('filter.placeholder')" v-model="orderOptions.searchName">
         </div>
         <div class="row second">
-          <div class="item v-center h-center" @click="orderOptions.orderMethod = 'id'" :class="{'active':orderOptions.orderMethod == 'id'}">ID</div>
-          <div class="item v-center h-center" @click="orderOptions.orderMethod = 'name'" :class="{'active':orderOptions.orderMethod == 'name'}">Имя</div>         
-          <div class="item v-center h-center" @click="orderOptions.orderMethod = 'age'" :class="{'active':orderOptions.orderMethod == 'age'}">Возраст</div>
+          <div class="item v-center h-center" @click="orderOptions.orderMethod = 'id'" :class="{'active':orderOptions.orderMethod == 'id'}">{{ $t("filter.id") }}</div>
+          <div class="item v-center h-center" @click="orderOptions.orderMethod = 'name'" :class="{'active':orderOptions.orderMethod == 'name'}">{{ $t("filter.name") }}</div>         
+          <div class="item v-center h-center" @click="orderOptions.orderMethod = 'age'" :class="{'active':orderOptions.orderMethod == 'age'}">{{ $t("filter.age") }}</div>
         </div>
         <div class="row third">
-          <div class="item v-center h-center" @click="orderOptions.ascending = true" :class="{'active':orderOptions.ascending}">По возрастанию</div>
-          <div class="item v-center h-center" @click="orderOptions.ascending = false" :class="{'active':!orderOptions.ascending}">По убыванию</div>
+          <div class="item v-center h-center" @click="orderOptions.ascending = true" :class="{'active':orderOptions.ascending}">{{ $t("filter.ascending") }}</div>
+          <div class="item v-center h-center" @click="orderOptions.ascending = false" :class="{'active':!orderOptions.ascending}">{{ $t("filter.descending") }}</div>
         </div>
       </div>
       <div class="col right">
-        <div class="row title">Вид</div>
+        <div class="row title">{{ $t("filter.view") }}</div>
         <div class="row switch">
           <div
           @click="listView.table = !listView.table;listView.preview = !listView.preview"
           class="item v-center h-center" 
           :class="{'active':listView.table}"
-          >Таблица</div>
+          >{{ $t("filter.table") }}</div>
           <div 
           @click="listView.preview = !listView.preview;listView.table = !listView.table"
           :class="{'active':listView.preview}"
-          class="item v-center h-center">Превью</div>
+          class="item v-center h-center">{{ $t("filter.preview") }}</div>
         </div>
       </div>
     </div>
@@ -47,7 +47,16 @@
     <div class="left-col">
       <div class="picture"><div class="bg" :class="item.image" :style="item.image"></div></div>
       <div class="name">{{item.name}}  {{item.surname}}</div>
-      <div class="age">{{item.age}}</div>
+      <div class="age">{{item.age}} 
+        <span v-if="
+        item.age < 21 || item.age >= 25 && item.age <= 30 || item.age >= 35 && item.age <= 40 || item.age >= 45 &&  item.age <= 50 || item.age >= 55 &&  item.age <= 60
+        || item.age >= 65 &&  item.age <= 70 || item.age >= 75 &&  item.age <= 80 || item.age >= 85 &&  item.age <= 90 || item.age >= 95 &&  item.age <= 100
+        ">{{ $tc('list.age', 0) }}</span>
+        <span v-else-if="
+        item.age >= 21 && item.age < 22 || item.age == 31 || item.age == 41 || item.age == 51 || item.age == 61 || item.age == 71 || item.age == 81 || item.age == 91 || item.age == 101
+        ">{{ $tc('list.age', 1) }}</span>
+        <span v-else-if="item.age >= 22">{{ $tc('list.age', 2) }}</span>
+      </div>
       <div class="tel">{{item.phone}}</div>
       <div class="fav" :class="{'active': item.favourite}"></div>
       <div v-if="listView.preview" class="txt">
@@ -58,10 +67,10 @@
       <video width="320" height="246" controls>
         <source :src="'static/video/' + item.video + '.mp4'" type="video/mp4">
         </video>
+      </div>
     </div>
   </div>
-</div>
-<!-- list end -->
+  <!-- list end -->
 </div>
 </template>
 
@@ -70,8 +79,8 @@ import Header from '@/components/Global/Header';
 import postData from 'api/data.json';
 import Isotope from 'isotope-layout/js/isotope.js';
 import packery from 'isotope-packery/packery-mode.js';
-import VueScrollbar from 'vue2-scrollbar';
 import Fuse from 'fuse-js-latest/dist/fuse.min.js';
+import VueI18n from 'vue-i18n'
 
 
 export default {
@@ -89,13 +98,8 @@ export default {
       }
     }
   },
-  watch: {
-  },
   components: {
     headerComp: Header,
-    VueScrollbar,
-  },
-  methods: {
   },
   computed: {
     orderBy: function(prop) {
@@ -131,15 +135,11 @@ if (this.orderOptions.ascending) {
       return filteredData;
     }
   },
-  mounted() {
-    console.log(this.postData);
-    require("vue2-scrollbar/dist/style/vue2-scrollbar.css");
-  },
   updated() {
     var that = this;
-   if (this.listView.preview) {
-    var grid = document.querySelector('.home .list');
-    var iso = new Isotope( grid, {
+    if (this.listView.preview) {
+      var grid = document.querySelector('.home .list');
+      var iso = new Isotope( grid, {
   // options...
   itemSelector: '.isotope-item',
   layoutMode: 'packery',
@@ -147,16 +147,16 @@ if (this.orderOptions.ascending) {
     gutter: 10
   }
 });
-  }
-  else {
-    var grid = document.querySelector('.home .list');
-    var iso = new Isotope( grid, {
+    }
+    else {
+      var grid = document.querySelector('.home .list');
+      var iso = new Isotope( grid, {
   // options...
   itemSelector: '.isotope-item',
   layoutMode: 'masonry',
 });
+    }
   }
-}
 }
 </script>
 

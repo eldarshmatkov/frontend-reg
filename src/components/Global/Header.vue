@@ -1,13 +1,15 @@
 <template>
 	<header>
 		<nav>
-			<router-link to="/">Home</router-link>
-			<router-link to="/about">About</router-link>
-			<router-link to="/whatever">Whatever</router-link>
+			<router-link to="/">{{ $t("header.main") }}</router-link>
+			<router-link to="/about">{{ $t("header.about") }}</router-link>
+			<router-link to="/whatever">{{ $t("header.whatever") }}</router-link>
 		</nav>
 		<div class="lang_switch">
-			<div class="ru active">русский</div>
-			<div class="eng">english</div>
+			<div class="ru" :class="{'active': this.$i18n.locale == 'ru'}"
+			@click="setLanguage('ru')">русский</div>
+			<div class="eng" :class="{'active': this.$i18n.locale == 'en'}"
+			@click="setLanguage('en')">english</div>
 		</div>
 	</header>
 </template>
@@ -17,6 +19,11 @@ export default {
 	data () {
 		return {
 
+		}
+	},
+	methods: {
+		setLanguage(val) {
+			this.$i18n.locale = val
 		}
 	}
 }
